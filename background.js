@@ -103,20 +103,32 @@ async function isAdobeAcrobatEnabled() {
   return adobeEnabledCache;
 }
 
+const ALL_RULE_IDS = [RULE_ABS, RULE_HTML, RULE_PDF, RULE_PDF_EXT];
+
 async function applyRedirectRules(adobeEnabled) {
-  const existing = await chrome.declarativeNetRequest.getDynamicRules();
-  const removeRuleIds = existing.map((r) => r.id);
+  // Always remove our fixed IDs (removing missing IDs is a no-op).
   await chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds,
+    removeRuleIds: ALL_RULE_IDS,
     addRules: buildStaticRules(adobeEnabled),
   });
 }
 
-async function refreshAdobeState() {
-  adobeEnabledCache = null;
-  const enabled = await isAdobeAcrobatEnabled();
-  await applyRedirectRules(enabled);
-  return enabled;
+/** Serialize refreshes — onInstalled + SW boot used to race and duplicate rule IDs. */
+let refreshChain = Promise.resolve(false);
+
+/**
+ * @returns {Promise<boolean>}
+ */
+function refreshAdobeState() {
+  refreshChain = refreshChain
+    .catch(() => false)
+    .then(async () => {
+      adobeEnabledCache = null;
+      const enabled = await isAdobeAcrobatEnabled();
+      await applyRedirectRules(enabled);
+      return enabled;
+    });
+  return refreshChain;
 }
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -127,7 +139,7 @@ chrome.runtime.onStartup.addListener(() => {
   void refreshAdobeState();
 });
 
-// Warm cache immediately when the service worker starts.
+// Warm cache when the service worker starts (deduped via refreshChain).
 void refreshAdobeState();
 
 chrome.management.onEnabled.addListener((info) => {
