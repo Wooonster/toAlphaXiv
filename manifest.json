@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "arXiv → alphaXiv",
-  "version": "1.1.2",
-  "description": "Redirect arXiv abs/html/pdf links to alphaXiv, with Adobe Acrobat PDF handling.",
+  "version": "1.2.0",
+  "minimum_chrome_version": "102",
+  "description": "Redirect arXiv abs/html/pdf links to alphaXiv, including when Adobe Acrobat is installed.",
   "permissions": [
     "declarativeNetRequest",
-    "management",
-    "storage",
     "tabs",
     "webNavigation"
   ],
@@ -15,18 +14,19 @@
     "*://www.arxiv.org/*",
     "*://export.arxiv.org/*"
   ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "redirects",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "run_at": "document_start",
-      "all_frames": false
-    }
-  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

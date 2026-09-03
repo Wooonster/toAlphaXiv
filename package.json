@@ -1,0 +1,9 @@
+{
+  "name": "toalphaxiv",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "generate-rules": "node scripts/generate-rules.mjs"
+  }
+}

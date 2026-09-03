@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1001,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "https://www.alphaxiv.org/abs/\\1"
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/abs/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#]|$)",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 1002,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "https://www.alphaxiv.org/abs/\\1"
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/html/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#]|$)",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 1003,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "https://www.alphaxiv.org/abs/\\1"
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/pdf/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:\\.pdf)?(?:[?#]|$)",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  }
+]

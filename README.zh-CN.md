@@ -10,42 +10,49 @@ Chrome 扩展：打开 arXiv 论文时自动跳转到 [alphaXiv](https://www.alp
 |------|------|------|
 | `arxiv.org/abs/{id}` | 始终 | `https://www.alphaxiv.org/abs/{id}` |
 | `arxiv.org/html/{id}` | 始终 | `https://www.alphaxiv.org/abs/{id}` |
-| `arxiv.org/pdf/{id}` | **未**安装 Adobe Acrobat | `https://www.alphaxiv.org/abs/{id}` |
-| `arxiv.org/pdf/{id}` | **已启用** Adobe Acrobat | `chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://arxiv.org/pdf/{id}` |
+| `arxiv.org/pdf/{id}` | 始终 | `https://www.alphaxiv.org/abs/{id}` |
 
 同时匹配 `www.arxiv.org`、`export.arxiv.org`。  
 支持新版 ID（`2301.12345`，可选 `vN`）与旧版 ID（`hep-th/9901001`）。
+只重定向标签页顶层导航，嵌入式 iframe 保持不变。
 
 ## 安装
 
 1. 打开 `chrome://extensions`
 2. 开启 **开发者模式**
 3. **加载已解压的扩展程序** → 选择本仓库目录
-4. 允许 **管理扩展程序** 权限（用于检测 Adobe Acrobat）
+4. 修改代码后在扩展管理页重新加载
 
 ## 原理
 
-- **`declarativeNetRequest`**：在浏览器网络层重定向 `/abs`、`/html`，以及未安装 Acrobat 时的 PDF，热路径不跑页面 JS。
-- **Content script**：同步处理点击（`location.assign`），覆盖新标签 / 修饰键点击，以及 DNR 无法表达的 Acrobat PDF 目标。
-- **Background**：将 Acrobat 启用状态缓存到 `storage.session`；启用 Acrobat 时，PDF 导航走 Acrobat 查看器 URL。
+- **`declarativeNetRequest`**：静态规则在浏览器加载扩展时就重定向 `/abs`、`/html` 和 PDF，热路径不需要唤醒 service worker。
+- **Background**：只在 Acrobat wrapper URL 出现时做兜底替换；普通 arXiv URL 完全由静态 DNR 规则处理。
 
 ## 权限
 
 | 权限 | 用途 |
 |------|------|
-| `declarativeNetRequest` | 快速 URL 重定向 |
-| `management` | 检测 Adobe Acrobat 扩展 |
-| `storage` | 缓存 Acrobat 状态，供同步点击使用 |
-| `tabs` / `webNavigation` | Acrobat PDF 导航兜底 |
+| `declarativeNetRequest` | 快速静态 URL 重定向 |
+| `tabs` / `webNavigation` | 捕获 Acrobat wrapper 导航 |
 
 ## 开发
 
 Manifest V3。修改后在 `chrome://extensions` 重新加载扩展。
 
+修改重定向规则后，重新生成静态规则并运行测试：
+
+```bash
+npm run generate-rules
+npm test
+```
+
 ```
 manifest.json
-background.js      # DNR 规则 + Acrobat 检测
-content.js         # 点击拦截
+background.js      # DNR 规则 + Acrobat 地址兜底
+rules.json         # 静态浏览器原生重定向规则
 lib/arxiv.js       # URL 解析 / 目标构造
+lib/rules.js       # 严格的 DNR 规则生成
+scripts/            # 静态规则生成脚本
+test/               # URL 与 DNR 回归测试
 icons/
 ```
