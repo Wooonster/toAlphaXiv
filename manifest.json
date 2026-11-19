@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "arXiv → alphaXiv",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "minimum_chrome_version": "102",
   "description": "Redirect arXiv abs/html/pdf links to alphaXiv, including when Adobe Acrobat is installed.",
   "permissions": [

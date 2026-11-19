@@ -22,3 +22,8 @@ test("parses Acrobat's wrapped PDF URL", () => {
     "2607.16051"
   );
 });
+
+test("Acrobat PDF redirects discard arbitrary query strings and fragments", () => {
+  const url = "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://arxiv.org/pdf/2607.16051v2?download=1&ref=reader#page=2";
+  assert.equal(resolveRedirectSync(url, true), "https://www.alphaxiv.org/abs/2607.16051v2");
+});

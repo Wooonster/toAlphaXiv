@@ -9,7 +9,7 @@
       }
     },
     "condition": {
-      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/abs/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#]|$)",
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/abs/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#].*)?$",
       "resourceTypes": [
         "main_frame"
       ]
@@ -25,7 +25,7 @@
       }
     },
     "condition": {
-      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/html/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#]|$)",
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/html/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:[?#].*)?$",
       "resourceTypes": [
         "main_frame"
       ]
@@ -41,7 +41,7 @@
       }
     },
     "condition": {
-      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/pdf/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:\\.pdf)?(?:[?#]|$)",
+      "regexFilter": "^https?://(?:www\\.|export\\.)?arxiv\\.org/pdf/((?:\\d{4}\\.\\d{4,5}(?:v\\d+)?|[a-z-]+(?:\\.[A-Za-z]{2})?/\\d{7}(?:v\\d+)?))(?:\\.pdf)?(?:[?#].*)?$",
       "resourceTypes": [
         "main_frame"
       ]
